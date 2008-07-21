@@ -1,0 +1,14 @@
+{% extends 'profile/base.html' %}
+
+{% block sitetitle %}{{ title }} : TopProfile{% endblock %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block contenttitle %}
+  {{ account.user.nickname }}
+{% endblock %}
+
+{% block contentbody %}
+<form action="." method="post">
+{{ form }}
+</form>
+{% endblock %}

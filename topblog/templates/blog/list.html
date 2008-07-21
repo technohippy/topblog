@@ -1,0 +1,43 @@
+{% extends 'blog/base.html' %}
+{% load filters %}
+
+{% block sitetitle %}{{ title }} : TopBlog{% endblock %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block topheader %}
+  {% if login_url %}
+    <a href="{{ login_url }}">Login</a>
+  {% else %}
+    {% if page_owner %}
+    <a href="{{ new_entry_url }}">New Entry</a>
+    {% endif %}
+    <a href="{{ logout_url }}">Logout</a>
+  {% endif %}
+{% endblock %}
+
+{% block topbar %}
+  {% if prev_page %}<a href="./?p={{ prev_page }}">&lt;&lt;Prev</a>{% endif %}
+  {% if next_page %}<a href="./?p={{ next_page }}">Next>></a>{% endif %}
+{% endblock %}
+
+{% block main %}
+  {% for entry in entries %}
+    <div class="item">
+      <div class="date">
+        <div>{{ entry.month }}</div>
+        <span>{{ entry.day }}</span>
+      </div>
+      <div class="content">
+        <h1>{{ entry.title|sanitize }}</h1>
+        {% if editable %}
+        <div class="bodyheader">
+          <a href="{{ entry.create_edit_url }}">Edit</a>
+        </div>
+        {% endif %}
+        <div class="body">
+          {{ entry.body|sanitize|textile }}
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+{% endblock %}

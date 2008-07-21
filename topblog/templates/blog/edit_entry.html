@@ -1,0 +1,45 @@
+{% extends 'blog/base.html' %}
+
+{% block sitetitle %}{{ title }} : TopBlog{% endblock %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block topheader %}
+  {% if login_url %}
+    {% if new_entry_url %}
+    <a href="{{ new_entry_url }}">New Entry</a>
+    {% endif %}
+    <a href="{{ logout_url }}">Logout</a>
+  {% else %}
+    <a href="{{ login_url }}">Login</a>
+  {% endif %}
+{% endblock %}
+
+{% block main %}
+  <div class="item">
+    <div class="date">
+      <!--
+      <div>OCT</div>
+      <span>01</span>
+      -->
+    </div>
+    <div class="content">
+      <h1>{{ form_title }}</h1>
+      <div class="body">
+        <div style="text-align:right">
+          <a href="http://www.textism.com/tools/textile/index.html" target="_blank">Formatting Rules</a>
+        </div>
+        <form action="." method="post">
+          <dl>
+            {% for field in form %}
+              <dt>{{ field.label_tag }}</dt>
+              <dd>{{ field }}</dd>
+            {% endfor %}
+            <dt>Tags (separated by a white space)</dt>
+            <dd><input id="id_tags" name="tags" value="{{ tagnames }}" /></dd>
+          </dl>
+          <input type="submit" value="Post" />
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

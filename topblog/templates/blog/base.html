@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load filters %}
+
+{% block stylesheets %}
+  <link rel="stylesheet" type="text/css" href="/stylesheets/custom.css" media="screen"/>
+  <link rel="stylesheet" type="text/css" href="/stylesheets/calendar.css" media="screen"/>
+{% endblock %}
+
+{% block navigation %}
+{% if blog.owner.nickname %}
+<h1>Profile</h1>
+<div>
+  {{blog.owner.nickname}}
+</div>
+{% endif %}
+
+<h1>Calendar</h1>
+<div>
+  <table class="calendar">
+    <thead>
+      <tr>
+        <td colspan="7">&lt;&lt; Jul 2008 >></td>
+      </tr>
+      <tr>
+        <td class="sun">S</td>
+        <td class="mon">M</td>
+        <td class="tue">T</td>
+        <td class="wed">W</td>
+        <td class="thr">T</td>
+        <td class="fri">F</td>
+        <td class="sat">S</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="sun"></td>
+        <td class="mon"></td>
+        <td class="tue"></td>
+        <td class="wed"></td>
+        <td class="thr"></td>
+        <td class="fri"></td>
+        <td class="sat"></td>
+      </tr>
+      <tr>
+        <td class="sun"></td>
+        <td class="mon"></td>
+        <td class="tue"></td>
+        <td class="wed today"></td>
+        <td class="thr"></td>
+        <td class="fri"></td>
+        <td class="sat"></td>
+      </tr>
+      <tr>
+        <td class="sun"></td>
+        <td class="mon"></td>
+        <td class="tue"></td>
+        <td class="wed"></td>
+        <td class="thr"></td>
+        <td class="fri"></td>
+        <td class="sat"></td>
+      </tr>
+      <tr>
+        <td class="sun"></td>
+        <td class="mon"></td>
+        <td class="tue"></td>
+        <td class="wed"></td>
+        <td class="thr"></td>
+        <td class="fri"></td>
+        <td class="sat"></td>
+      </tr>
+      <tr>
+        <td class="sun"></td>
+        <td class="mon"></td>
+        <td class="tue"></td>
+        <td class="wed"></td>
+        <td class="thr"></td>
+        <td class="fri"></td>
+        <td class="sat"></td>
+      </tr>
+    </tbody>
+    <tfoot>
+    </tfoot>
+  </table>
+</div>
+
+<h1>Tags</h1>
+<div>
+{% for tag in tags %}
+  <span class="tag tag-{{ tag.count|taglevel }}">&nbsp;{{ tag.name }}&nbsp;</span>
+{% endfor %}
+<br style="clear:both" />
+</div>
+
+<h1>Other Links</h1>
+<ul>
+  <li><a href="index.html">sociis natoque</a></li>
+  <li><a href="index.html">magna sed purus</a></li>
+  <li><a href="index.html">tincidunt</a></li>
+  <li><a href="index.html">consequat molestie</a></li>
+</ul>
+
+{% endblock %}
