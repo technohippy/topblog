@@ -1,0 +1,20 @@
+table.calendar {
+  background-color: white;
+}
+table.calendar thead td {
+  text-align: center;
+}
+table.calendar tbody td {
+  width: 20px;
+  height: 20px;
+  border: 1px solid green;
+}
+table.calendar tbody td.sat {
+  background-color: #ccccff;
+}
+table.calendar tbody td.sun {
+  background-color: #ffcccc;
+}
+table.calendar tbody td.today {
+  background-color: yellow;
+}

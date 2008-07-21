@@ -1,0 +1,39 @@
+.topbar {
+  background-color: black; 
+  /*
+  height: 40px;
+  */
+  vertical-align: middle;
+  text-align: center;
+  color: white;
+  width: 630px; 
+  margin: 0 auto;
+}
+
+div.body dd input {
+  width: 380px;
+  margin-bottom: 5px;
+}
+
+div.body dd textarea {
+  width: 380px;
+  height: 250px;
+  margin-bottom: 5px;
+}
+
+span.tag {
+  float: left;
+}
+span.tag-1 { font-size: 5pt }
+span.tag-2 { font-size: 7pt }
+span.tag-3 { font-size: 9pt }
+span.tag-4 { font-size: 11pt }
+span.tag-5 { font-size: 13pt }
+span.tag-6 { font-size: 15 }
+span.tag-7 { font-size: 17 }
+span.tag-8 { font-size: 19 }
+span.tag-9 { font-size: 21 }
+span.tag-10 { font-size: 23 }
+span.tag-11 { font-size: 23 }
+span.tag-12 { font-size: 23 }
+span.tag-13 { font-size: 23 }
