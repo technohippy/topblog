@@ -1,9 +1,18 @@
 {% extends 'base.html' %}
 {% load filters %}
 
-{% block stylesheets %}
+{% block htmlheader %}
   <link rel="stylesheet" type="text/css" href="/stylesheets/custom.css" media="screen"/>
   <link rel="stylesheet" type="text/css" href="/stylesheets/calendar.css" media="screen"/>
+
+  <!-- protocalendar -->
+  <link rel="stylesheet" type="text/css" href="/stylesheets/protocalendar/simple.css" media="screen"/>
+  <script src="/javascripts/prototype.js" type="text/javascript"></script>
+  <script src="/javascripts/effects.js" type="text/javascript"></script>
+  <script src="/javascripts/protocalendar/protocalendar.js" type="text/javascript"></script>
+  <script src="/javascripts/protocalendar/lang_ja.js" type="text/javascript"></script>
+  <script src="/javascripts/protocalendar/lang_zh-cn.js" type="text/javascript"></script>
+  <script src="/javascripts/protocalendar/lang_zh-tw.js" type="text/javascript"></script>
 {% endblock %}
 
 {% block navigation %}
