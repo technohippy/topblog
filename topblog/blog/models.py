@@ -42,22 +42,22 @@ class Entry(db.Model):
   created_on = db.DateTimeProperty(auto_now_add=True)
 
   def month(self):
-    return ['', 'Jan', 'Feb', 'Mar', 'Apl', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][self.created_on.month]
+    return ['', 'Jan', 'Feb', 'Mar', 'Apl', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][self.date.month]
 
   def day(self):
-    return self.created_on.day
+    return self.date.day
 
   def time(self):
-    return '%2d:%2d' % (self.created_on.hour, self.created_on.minute)
+    return '%2d:%2d' % (self.date.hour, self.date.minute)
 
   def create_edit_url(self):
     return '/blog/%s/edit/%d' % (self.parent().name, self.index)
 
   @classmethod
   def first_for(cls, blog):
-    return cls.all().ancestor(blog).order('-index').fetch(1)[0]
+    return cls.all().ancestor(blog).order('-date').order('-index').get()
 
   @classmethod
   def last_for(cls, blog):
-    return cls.all().ancestor(blog).order('index').fetch(1)[0]
+    return cls.all().ancestor(blog).order('date').order('index').get()
 

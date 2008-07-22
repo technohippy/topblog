@@ -1,4 +1,6 @@
 import logging
+import datetime
+import time
 from google.appengine.api import users
 from google.appengine.ext import db
 from django.http import HttpResponse, HttpResponseRedirect
@@ -7,7 +9,8 @@ from top.utils import *
 from top.blog import models
 from top.blog import forms
 
-PER_PAGE = 1
+PER_PAGE = 5
+DATE_FORMAT = '%Y-%m-%d'
 
 # Create your views here.
 def index(request):
@@ -22,15 +25,13 @@ def index(request):
     context['blogs'] = [models.Blog(name='noblog', title='No Blog')]
   return render_to_response('blog/index.html', context)
 
-def list(request, blogname):
+def paginate_list(request, blogname, get_entries_func):
   page = int(request.GET.get('p', '0'))
   user = users.get_current_user()
   blog = models.Blog.get_by_key_name(blogname)
-  if blog is None:
-    return render_error("The blog named `%s' does not exist." % blogname)
+  if blog is None: return render_error("The blog named `%s' does not exist." % blogname)
   context = context_with_login_status(user, blog)
-  #context['entries'] = models.Entry.all().ancestor(blog).filter('index <= ', from_index).order('-index').fetch(PER_PAGE, PER_PAGE * page)
-  context['entries'] = models.Entry.all().ancestor(blog).order('-index').fetch(PER_PAGE, PER_PAGE * page)
+  context['entries'] = get_entries_func(blog, page)
   if len(context['entries']) == 0:
     context['entries'] = [models.Entry(title='No Entry', body='Comming soon...')]
     context['editable'] = False
@@ -41,6 +42,39 @@ def list(request, blogname):
     if context['entries'][-1].index != models.Entry.last_for(blog).index:
       context['next_page'] = str(page + 1)
   return render_to_response('blog/list.html', context)
+
+def list(request, blogname):
+  def get_entries_func(blog, page):
+    return models.Entry.all().ancestor(blog).order('-date').order('-index').fetch(PER_PAGE, PER_PAGE * page)
+  return paginate_list(request, blogname, get_entries_func)
+"""
+def list(request, blogname):
+  page = int(request.GET.get('p', '0'))
+  user = users.get_current_user()
+  blog = models.Blog.get_by_key_name(blogname)
+  if blog is None: return render_error("The blog named `%s' does not exist." % blogname)
+  context = context_with_login_status(user, blog)
+  context['entries'] = models.Entry.all().ancestor(blog).order('-date').order('-index').fetch(PER_PAGE, PER_PAGE * page)
+  if len(context['entries']) == 0:
+    context['entries'] = [models.Entry(title='No Entry', body='Comming soon...')]
+    context['editable'] = False
+  else:
+    context['editable'] = context['page_owner']
+    if 0 < page:
+      context['prev_page'] = str(page - 1)
+    if context['entries'][-1].index != models.Entry.last_for(blog).index:
+      context['next_page'] = str(page + 1)
+  return render_to_response('blog/list.html', context)
+"""
+
+def list_yearly(request, blogname, year):
+  pass
+
+def list_monthly(request, blogname, year, month):
+  pass
+
+def list_daily(request, blogname, year, month, day):
+  pass
 
 def new(request, blogname):
   user = users.get_current_user()
@@ -61,7 +95,7 @@ def edit(request, blogname, index):
   if entry is None:
     return render_to_response('error.html', dict(message='%s%s does not exist' % (blogname, index)))
   if request.method == 'GET':
-    context['form'] = forms.EntryForm({'title':entry.title, 'body':entry.body})
+    context['form'] = forms.EntryForm({'title':entry.title, 'body':entry.body, 'date':entry.date.strftime(DATE_FORMAT)})
     context['form_title'] = 'Edit Entry'
     context['tagnames'] = ''
     for tagname in entry.tags:
@@ -70,6 +104,7 @@ def edit(request, blogname, index):
     params = request.POST
     entry.title = params['title']
     entry.body = params['body']
+    entry.date = datetime.datetime(*map(int, params['date'].split('-')))
     return post_entry(params, blogname, user, entry)
   return render_to_response('blog/edit_entry.html', context)
 
@@ -85,7 +120,7 @@ def post_entry(params, blogname, user, entry=None):
       blog.entry_count += 1
       blog.put()
       local_entry = models.Entry(blog, blogname+str(entry_count),
-          owner=user, index=entry_count, title=params['title'], body=params['body'])
+          owner=user, index=entry_count, title=params['title'], body=params['body'], date=datetime.datetime(*map(int, params['date'].split('-'))))
     else: # edit
       for tag in local_entry.tags:
         tag.count -=1
